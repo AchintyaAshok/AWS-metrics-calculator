@@ -7,76 +7,62 @@ const sourceFile = '/Users/aashok/Desktop/metrics.json'
 Get the source file.
 */
 const readSourceFile = (filePath) => {
-	return fs.readFileSync(filePath, 'utf8');
+  return fs.readFileSync(filePath, 'utf8');
 }
 
 const massageAndSortData = (data) => {
-	let dataPoints = data['Datapoints']
-	for(let d of dataPoints) {
-		d['Date'] = new Date(d['Timestamp'])
-	}
+  let dataPoints = data['Datapoints']
+  for (let d of dataPoints) {
+    d['Date'] = new Date(d['Timestamp'])
+  }
 
-	dataPoints.sort( (a, b) => {
-		return a['Date'] - b['Date']
-	})
+  dataPoints.sort((a, b) => {
+    return a['Date'] - b['Date']
+  })
 
-	return dataPoints
+  return dataPoints
 }
 
-
 const getAverageForMetric = (dataPoints, metricName) => {
-	let collectedMetricPoints = dataPoints.map(d => d[metricName])
-	//console.log('Collected Metrics: ', collectedMetricPoints)	
 
-	let metricByDate = dataPoints.map(d => {
-		return {
-			d: dateFormat(d['Date'], 'mm/dd/yy @ h:MM:ss TT'),
-			avg: d['Average']
-		}
-	})	
-	console.log('Metrics By Date: ', metricByDate)
+  let metricByDate = dataPoints.map(d => {
+    return {
+      d: dateFormat(d['Date'], 'mm/dd/yy @ h:MM:ss TT'),
+      avg: d['Average']
+    }
+  })
+  console.log('Metrics By Date: ', metricByDate)
 
+  let sumData = 0
 
-	let sumData = 0
-	
-	dataPoints.map(d => {
-		sumData += d[metricName]
-	})
+  dataPoints.map(d => {
+    sumData += d[metricName]
+  })
 
-	/*
-	for (let p of dataPoints) {
-		sumData += parseInt(p)
-	}
-	*/
-	
-
-	return (sumData / dataPoints.length)
+  return (sumData / dataPoints.length)
 }
 
 const getMaxForMetric = (dataPoints, metricName) => {
-	let collectedMetricPoints = dataPoints.map(d => d[metricName])
-//	console.log('MAX Calculation for: ', collectedMetricPoints)
-	return Math.max(...collectedMetricPoints)
+  let collectedMetricPoints = dataPoints.map(d => d[metricName])
+  //	console.log('MAX Calculation for: ', collectedMetricPoints)
+  return Math.max(...collectedMetricPoints)
 }
 
 const calculateAverageForStatistics = (statistics) => {
-	// First read the file
-	const rawData = readSourceFile(sourceFile)
-	
-	if(!rawData) {
-		throw new Error('Unable to read sourcefile')
-	}
+  // First read the file
+  const rawData = readSourceFile(sourceFile)
 
-	const data = JSON.parse(rawData)
-	const dataPoints = massageAndSortData(data)
+  if (!rawData) {
+    throw new Error('Unable to read sourcefile')
+  }
 
-//	console.log('DATA => ', dataPoints)
-	const calculatedAvgForMetric = getAverageForMetric(dataPoints, 'Average')
-	const calculatedMaxForMetric = getMaxForMetric(dataPoints, 'Average')
-	console.log(`\n\tAverage: ${calculatedAvgForMetric}`)	
-	console.log(`\tMax: ${calculatedMaxForMetric}`)
+  const data = JSON.parse(rawData)
+  const dataPoints = massageAndSortData(data)
 
-//	console.log(getAverageForMetric(dataPoints, 'Average'))
+  const calculatedAvgForMetric = getAverageForMetric(dataPoints, 'Average')
+  const calculatedMaxForMetric = getMaxForMetric(dataPoints, 'Average')
+  console.log(`\n\tAverage: ${calculatedAvgForMetric}`)
+  console.log(`\tMax: ${calculatedMaxForMetric}`)
 }
 
 calculateAverageForStatistics(['Average'])

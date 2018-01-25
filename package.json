@@ -19,6 +19,7 @@
   "author": "Achintya Ashok",
   "license": "MIT",
   "dependencies": {
-    "dateformat": "^3.0.2"
+    "dateformat": "^3.0.2",
+    "standard": "^10.0.3"
   }
 }
