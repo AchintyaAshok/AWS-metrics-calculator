@@ -1,0 +1,20 @@
+{
+  "name": "aws-averagifier",
+  "version": "1.0.0",
+  "description": "Calculates the average a particular metric for a response from AWS",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "AWS",
+    "Amazon",
+    "Service",
+    "Web",
+    "Average",
+    "Metrics",
+    "Calculation"
+  ],
+  "author": "Achintya Ashok",
+  "license": "MIT"
+}
