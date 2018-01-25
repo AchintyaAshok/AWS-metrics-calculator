@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-	"start": "node src/average_calculator.js"
+    "start": "node src/average_calculator.js"
   },
   "keywords": [
     "AWS",
@@ -17,5 +17,8 @@
     "Calculation"
   ],
   "author": "Achintya Ashok",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "dateformat": "^3.0.2"
+  }
 }

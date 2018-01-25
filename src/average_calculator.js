@@ -1,5 +1,7 @@
 const fs = require('fs')
+const dateFormat = require('dateformat')
 const sourceFile = '/Users/aashok/Desktop/metrics.json'
+
 
 /**
 Get the source file.
@@ -24,7 +26,16 @@ const massageAndSortData = (data) => {
 
 const getAverageForMetric = (dataPoints, metricName) => {
 	let collectedMetricPoints = dataPoints.map(d => d[metricName])
-	console.log('Collected Metrics: ', collectedMetricPoints)	
+	//console.log('Collected Metrics: ', collectedMetricPoints)	
+
+	let metricByDate = dataPoints.map(d => {
+		return {
+			d: dateFormat(d['Date'], 'mm/dd/yy @ h:MM:ss TT'),
+			avg: d['Average']
+		}
+	})	
+	console.log('Metrics By Date: ', metricByDate)
+
 
 	let sumData = 0
 	
