@@ -23,6 +23,9 @@ const massageAndSortData = (data) => {
 
 
 const getAverageForMetric = (dataPoints, metricName) => {
+	let collectedMetricPoints = dataPoints.map(d => d[metricName])
+	console.log('Collected Metrics: ', collectedMetricPoints)	
+
 	let sumData = 0
 	
 	dataPoints.map(d => {
@@ -39,6 +42,12 @@ const getAverageForMetric = (dataPoints, metricName) => {
 	return (sumData / dataPoints.length)
 }
 
+const getMaxForMetric = (dataPoints, metricName) => {
+	let collectedMetricPoints = dataPoints.map(d => d[metricName])
+//	console.log('MAX Calculation for: ', collectedMetricPoints)
+	return Math.max(...collectedMetricPoints)
+}
+
 const calculateAverageForStatistics = (statistics) => {
 	// First read the file
 	const rawData = readSourceFile(sourceFile)
@@ -50,9 +59,13 @@ const calculateAverageForStatistics = (statistics) => {
 	const data = JSON.parse(rawData)
 	const dataPoints = massageAndSortData(data)
 
-	console.log('DATA => ', dataPoints)
-	
-	console.log(getAverageForMetric(dataPoints, 'Average'))
+//	console.log('DATA => ', dataPoints)
+	const calculatedAvgForMetric = getAverageForMetric(dataPoints, 'Average')
+	const calculatedMaxForMetric = getMaxForMetric(dataPoints, 'Average')
+	console.log(`\n\tAverage: ${calculatedAvgForMetric}`)	
+	console.log(`\tMax: ${calculatedMaxForMetric}`)
+
+//	console.log(getAverageForMetric(dataPoints, 'Average'))
 }
 
 calculateAverageForStatistics(['Average'])
