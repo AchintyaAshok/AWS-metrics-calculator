@@ -6,8 +6,6 @@ if (argv.filePath === undefined || argv.metric === undefined) {
   throw new Error('Must provide a filePath & metric')
 }
 
-// const sourceFile = '/Users/aashok/Desktop/metrics.json'
-
 /**
 Get the source file.
 */
