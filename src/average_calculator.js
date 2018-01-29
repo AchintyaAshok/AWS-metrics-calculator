@@ -1,13 +1,18 @@
 const fs = require('fs')
 const dateFormat = require('dateformat')
-const sourceFile = '/Users/aashok/Desktop/metrics.json'
+const argv = require('yargs').argv
 
+if (argv.filePath === undefined || argv.metric === undefined) {
+  throw new Error('Must provide a filePath & metric')
+}
+
+// const sourceFile = '/Users/aashok/Desktop/metrics.json'
 
 /**
 Get the source file.
 */
 const readSourceFile = (filePath) => {
-  return fs.readFileSync(filePath, 'utf8');
+  return fs.readFileSync(filePath, 'utf8')
 }
 
 const massageAndSortData = (data) => {
@@ -24,12 +29,13 @@ const massageAndSortData = (data) => {
 }
 
 const getAverageForMetric = (dataPoints, metricName) => {
-
   let metricByDate = dataPoints.map(d => {
-    return {
-      d: dateFormat(d['Date'], 'mm/dd/yy @ h:MM:ss TT'),
-      avg: d['Average']
+    let p = {
+      d: dateFormat(d['Date'], 'mm/dd/yy @ h:MM:ss TT')
     }
+    p[metricName] = d[metricName]
+
+    return p
   })
   console.log('Metrics By Date: ', metricByDate)
 
@@ -44,13 +50,14 @@ const getAverageForMetric = (dataPoints, metricName) => {
 
 const getMaxForMetric = (dataPoints, metricName) => {
   let collectedMetricPoints = dataPoints.map(d => d[metricName])
-  //	console.log('MAX Calculation for: ', collectedMetricPoints)
   return Math.max(...collectedMetricPoints)
 }
 
-const calculateAverageForStatistics = (statistics) => {
+const calculateAverageForStatistics = () => {
+  console.log(`FilePath: ${argv.filePath} | Metric: ${argv.metric}`)
+
   // First read the file
-  const rawData = readSourceFile(sourceFile)
+  const rawData = readSourceFile(argv.filePath)
 
   if (!rawData) {
     throw new Error('Unable to read sourcefile')
@@ -59,10 +66,10 @@ const calculateAverageForStatistics = (statistics) => {
   const data = JSON.parse(rawData)
   const dataPoints = massageAndSortData(data)
 
-  const calculatedAvgForMetric = getAverageForMetric(dataPoints, 'Average')
-  const calculatedMaxForMetric = getMaxForMetric(dataPoints, 'Average')
+  const calculatedAvgForMetric = getAverageForMetric(dataPoints, argv.metric)
+  const calculatedMaxForMetric = getMaxForMetric(dataPoints, argv.metric)
   console.log(`\n\tAverage: ${calculatedAvgForMetric}`)
   console.log(`\tMax: ${calculatedMaxForMetric}`)
 }
 
-calculateAverageForStatistics(['Average'])
+calculateAverageForStatistics()

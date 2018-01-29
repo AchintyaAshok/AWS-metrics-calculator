@@ -20,6 +20,7 @@
   "license": "MIT",
   "dependencies": {
     "dateformat": "^3.0.2",
-    "standard": "^10.0.3"
+    "standard": "^10.0.3",
+    "yargs": "^11.0.0"
   }
 }
